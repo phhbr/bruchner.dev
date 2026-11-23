@@ -55,9 +55,10 @@ jobs:
       - name: Upload site
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_PORT: ${{ vars.VPS_SSH_PORT }}
         run: >-
           rsync -rc --delete-delay --delay-updates --chmod=D755,F644
-          -e "ssh -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes"
+          -e "ssh -p ${VPS_SSH_PORT} -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes"
           dist/ "deploy@${VPS_HOST}:"
 
       - name: Verify the deployed version
